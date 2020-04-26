@@ -1,23 +1,24 @@
 package version_1_1;
 
 import version_1_1.model.Book;
-import version_1_1.storage.DataStorage;
+import version_1_1.storage.DataStorageCollection;
 
 import java.util.Scanner;
 
 public class BookTest implements Commands {
 
     private static Scanner scanner = new Scanner(System.in);
-    private static DataStorage dataStorage = new DataStorage();
+//    private static DataStorage<Book> dataStorage = new DataStorage<>();
+    private static DataStorageCollection dataStorage=new DataStorageCollection();
 
     public static void main(String[] args) {
         boolean isRun = true;
         while (isRun) {
             showCommands();
-            String command=scanner.nextLine();
-            switch (command){
+            String command = scanner.nextLine();
+            switch (command) {
                 case EXIT:
-                    isRun=false;
+                    isRun = false;
                     System.out.println("Program closed");
                     break;
                 case ADD_BOOK:
@@ -47,18 +48,23 @@ public class BookTest implements Commands {
         System.out.println("Author Name: ");
         String authorName = scanner.nextLine();
         System.out.println("Set Book price: ");
-        double price=Double.parseDouble(scanner.nextLine());
+        double price = Double.parseDouble(scanner.nextLine());
         System.out.println("Input count of Book: ");
-        int count =Integer.parseInt(scanner.nextLine());
-        Book book=new Book(title,authorName,price,count);
+        int count = Integer.parseInt(scanner.nextLine());
+        Book book = new Book(title, authorName, price, count);
         dataStorage.add(book);
-        dataStorage.print();
+        dataStorage.printBook();
     }
 
     private static void searchBook() {
-        dataStorage.print();
+        if (dataStorage.isBookListEmty()){
+            System.out.println("First add book!");
+            addBook();
+        }
+        dataStorage.printBook();
         System.out.println("Input Books title to search");
         String searchedTitle = scanner.nextLine();
-        dataStorage.searchBookByTitle(searchedTitle);
+        dataStorage.getBookByTitle(searchedTitle);
+
     }
 }
